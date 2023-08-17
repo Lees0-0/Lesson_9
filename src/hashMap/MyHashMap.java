@@ -1,26 +1,26 @@
 package hashMap;
-public class MyHashMap<T> {
-    private static final int cap = 16;
-    private Node<T>[] buckets = new Node[cap];
+public class MyHashMap<K, V> {
+    private static final int CAP = 16;
+    private Node<K, V>[] buckets = new Node[CAP];
     private int size = 0;
 
-    private int hash(T key) {
-        return Math.abs(key.hashCode()) % buckets.length;
+    private int hash(K key) {
+        return key == null ? 0 : Math.abs(key.hashCode()) % buckets.length;
     }
 
-    public void put(Integer key, String value) {
-        int index = hash((T) key);
-        Node<T> newNode = (Node<T>) new Node<>(key, null, value);
+    public void put(K key, V value) {
+        int index = hash(key);
+        Node<K, V> newNode = new Node<>(key, null, value);
 
         if (buckets[index] == null) {
             buckets[index] = newNode;
         } else {
-            Node<T> current = buckets[index];
-            Node<T> prev = null;
+            Node<K, V> current = buckets[index];
+            Node<K, V> prev = null;
 
             while (current != null) {
                 if (current.getKey().equals(key)) {
-                    current.setValue((T) value);
+                    current.setValue((V) value);
                     return;
                 }
                 prev = current;
@@ -29,13 +29,34 @@ public class MyHashMap<T> {
 
             prev.setNextNode(newNode);
         }
+
         size++;
+
+        rebalance();
     }
 
-    public void remove(T key) {
+    public void rebalance() {
+        if (size >= buckets.length) {
+            int newCapacity = buckets.length * 2;
+            Node<K, V>[] newBuckets = new Node[newCapacity];
+
+            for (Node<K, V> node : buckets) {
+                while (node != null) {
+                    Node<K, V> next = node.getNextNode();
+                    int newIndex = hash(node.getKey()) % newCapacity;
+                    node.setNextNode(newBuckets[newIndex]);
+                    newBuckets[newIndex] = node;
+                    node = next;
+                }
+            }
+            buckets = newBuckets;
+        }
+    }
+
+    public void remove(K key) {
         int index = hash(key);
-        Node<T> current = buckets[index];
-        Node<T> prev = null;
+        Node<K, V> current = buckets[index];
+        Node<K, V> prev = null;
 
         while (current != null) {
             if (current.getKey().equals(key)) {
@@ -53,7 +74,7 @@ public class MyHashMap<T> {
     }
 
     public void clear() {
-        buckets = new Node[cap];
+        buckets = new Node[CAP];
         size = 0;
     }
 
@@ -61,13 +82,13 @@ public class MyHashMap<T> {
         return size;
     }
 
-    public T get(T key) {
+    public K get(K key) {
         int index = hash(key);
-        Node<T> current = buckets[index];
+        Node<K, V> current = buckets[index];
 
         while (current != null) {
             if (current.getKey().equals(key)) {
-                return current.getValue();
+                return (K) current.getValue();
             }
             current = current.getNextNode();
         }
@@ -75,7 +96,7 @@ public class MyHashMap<T> {
     }
 
     public static void main(String[] args) {
-        MyHashMap<Integer> MyHashMap = new MyHashMap<>();
+        MyHashMap<Integer, String> MyHashMap = new MyHashMap<>();
 
         MyHashMap.put(1, "Ivan");
         MyHashMap.put(2, "Fedir");

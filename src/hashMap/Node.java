@@ -1,37 +1,38 @@
 package hashMap;
-public class Node<T> {
+public class Node<K, V> {
 
-    private T key;
-    private Node<T> nextNode;
-    private T value;
+    private K key;
+    private Node<K, V> nextNode;
+    private V value;
 
-    public Node(T key, Node<T> nextNode, T value) {
+    public Node(K key, Node<K, V> nextNode, V value) {
         this.key = key;
         this.nextNode = nextNode;
         this.value = value;
     }
 
-    public T getKey() {
+    public K getKey() {
         return key;
     }
 
-    public void setKey(T key) {
+    public void setKey(K key) {
         this.key = key;
     }
 
-    public Node<T> getNextNode() {
+    public Node<K, V> getNextNode() {
         return nextNode;
     }
 
-    public void setNextNode(Node<T> nextNode) {
+    public void setNextNode(Node<K, V> nextNode) {
         this.nextNode = nextNode;
     }
 
-    public T getValue() {
+    public V getValue() {
         return value;
     }
 
-    public void setValue(T value) {
+    public void setValue(V value) {
         this.value = value;
     }
 }
+
