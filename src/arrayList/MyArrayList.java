@@ -19,10 +19,6 @@ public class MyArrayList <T> {
     }
 
     public void remove(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Invalid index");
-        }
-
         for (int i = index; i < size - 1; i++) {
             values[i] = values[i + 1];
         }
@@ -31,7 +27,7 @@ public class MyArrayList <T> {
     }
 
     public void clear() {
-        values = null;
+        values = new Object[DEFAULT_CAPACITY];
         size = 0;
     }
 
@@ -40,10 +36,12 @@ public class MyArrayList <T> {
     }
 
     public T get(int index) {
+        return (T) values[index];
+    }
+    private void validateIndex(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Invalid index");
         }
-        return (T) values[index];
     }
 
     public static void main(String[] args) {
