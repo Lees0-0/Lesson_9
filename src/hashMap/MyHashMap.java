@@ -111,9 +111,11 @@ public class MyHashMap<K, V> {
         System.out.println("MyHashMap.get(2) after update: " + MyHashMap.get(2));
 
         MyHashMap.remove(3);
+        MyHashMap.remove(2);
         System.out.println("MyHashMap.size() after removal: " + MyHashMap.size());
 
         MyHashMap.clear();
         System.out.println("MyHashMap.size() after clearing: " + MyHashMap.size());
+
     }
 }
